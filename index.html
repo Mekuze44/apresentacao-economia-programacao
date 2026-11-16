@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080d12" />
+  <meta name="description" content="Uma apresentação sobre a interseção entre economia e programação." />
+  <title>Economia × Programação</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #080d12;
+      --surface: #101820;
+      --surface-2: #14212a;
+      --text: #edf5f4;
+      --muted: #9aabb3;
+      --green: #7cffb2;
+      --blue: #55c8ff;
+      --line: rgba(124, 255, 178, .17);
+      --mono: "Fira Code", monospace;
+      --sans: "Inter", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+      background: var(--bg);
+    }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 80% 10%, rgba(28, 106, 94, .13), transparent 30rem),
+        radial-gradient(circle at 10% 80%, rgba(35, 111, 153, .10), transparent 28rem),
+        var(--bg);
+      font-family: var(--sans);
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    .progress {
+      position: fixed; inset: 0 auto auto 0; height: 3px; width: 0;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      z-index: 20; box-shadow: 0 0 16px rgba(124,255,178,.6);
+    }
+    .topbar {
+      position: fixed; z-index: 15; top: 0; left: 0; width: 100%;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 22px clamp(20px, 6vw, 88px);
+      background: linear-gradient(180deg, rgba(8,13,18,.92), transparent);
+    }
+    .brand {
+      font: 600 12px var(--mono); letter-spacing: .12em; color: var(--green);
+      text-transform: uppercase;
+    }
+    .brand span { color: var(--muted); }
+    .nav { display: flex; gap: 9px; }
+    .nav a {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #40515a; transition: .25s ease;
+    }
+    .nav a.active { background: var(--green); box-shadow: 0 0 12px var(--green); transform: scale(1.25); }
+
+    .slide {
+      min-height: 100svh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 110px clamp(24px, 10vw, 150px) 76px;
+      isolation: isolate;
+    }
+    .slide::before {
+      content: ""; position: absolute; inset: 12% 5%;
+      border: 1px solid rgba(255,255,255,.035); border-radius: 28px;
+      pointer-events: none; z-index: -1;
+    }
+    .inner { width: min(1120px, 100%); margin: 0 auto; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--green); font: 500 12px var(--mono);
+      letter-spacing: .14em; text-transform: uppercase; margin-bottom: 24px;
+    }
+    .eyebrow::before { content: ""; width: 25px; height: 1px; background: var(--green); }
+    h1, h2, p { margin-top: 0; }
+    h1 {
+      max-width: 900px; font-size: clamp(3.1rem, 8vw, 7.6rem);
+      line-height: .98; letter-spacing: -.075em; margin-bottom: 28px;
+    }
+    h2 {
+      font-size: clamp(2.35rem, 5.2vw, 5rem); line-height: 1.02;
+      letter-spacing: -.065em; margin-bottom: 22px;
+    }
+    .accent {
+      color: var(--green);
+      text-shadow: 0 0 34px rgba(124,255,178,.17);
+    }
+    .blue { color: var(--blue); }
+    .lead {
+      color: var(--muted); font-size: clamp(1rem, 1.7vw, 1.25rem);
+      line-height: 1.75; max-width: 680px;
+    }
+    .hero .lead { max-width: 600px; }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: center;
+    }
+    .hero-art {
+      min-height: 350px; display: grid; place-items: center; position: relative;
+    }
+    .orb {
+      width: min(27vw, 310px); aspect-ratio: 1; border-radius: 50%;
+      border: 1px solid rgba(124,255,178,.35);
+      background: radial-gradient(circle at 35% 30%, rgba(124,255,178,.2), rgba(22,68,68,.08) 42%, transparent 70%);
+      box-shadow: 0 0 80px rgba(67,255,178,.10), inset 0 0 50px rgba(85,200,255,.08);
+      position: relative; animation: float 6s ease-in-out infinite;
+    }
+    .orb::before, .orb::after {
+      content: ""; position: absolute; inset: 13%; border: 1px solid rgba(85,200,255,.42);
+      border-radius: 50%; transform: rotateX(68deg) rotateZ(28deg);
+    }
+    .orb::after { inset: -8%; transform: rotateX(68deg) rotateZ(-35deg); border-color: rgba(124,255,178,.28); }
+    .orb-icon {
+      position: absolute; inset: 0; display: grid; place-items: center;
+      color: var(--green); font-size: clamp(3rem, 7vw, 5.5rem);
+      filter: drop-shadow(0 0 25px rgba(124,255,178,.5));
+    }
+    .float-label {
+      position: absolute; font: 11px var(--mono); color: var(--muted);
+      border: 1px solid var(--line); background: rgba(12,22,27,.8);
+      padding: 9px 12px; border-radius: 7px;
+    }
+    .label-a { top: 13%; right: 2%; }
+    .label-b { bottom: 13%; left: 0; }
+    .scroll-hint {
+      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+      color: #71828a; font: 10px var(--mono); letter-spacing: .16em;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .scroll-hint i { color: var(--green); animation: bob 1.5s infinite; }
+
+    .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 42px; }
+    .card {
+      background: linear-gradient(145deg, rgba(20,33,42,.88), rgba(12,20,27,.82));
+      border: 1px solid rgba(255,255,255,.07); border-radius: 16px;
+      padding: 26px; transition: transform .3s, border-color .3s, background .3s;
+    }
+    .card:hover { transform: translateY(-5px); border-color: rgba(124,255,178,.38); }
+    .card-icon {
+      width: 44px; height: 44px; display: grid; place-items: center;
+      color: var(--green); background: rgba(124,255,178,.09);
+      border: 1px solid rgba(124,255,178,.15); border-radius: 12px;
+      font-size: 18px; margin-bottom: 20px;
+    }
+    .card h3 { font-size: 1.05rem; margin: 0 0 10px; }
+    .card p { color: var(--muted); line-height: 1.65; font-size: .93rem; margin: 0; }
+    .tag {
+      display: inline-block; margin-top: 17px; color: var(--blue);
+      font: 10px var(--mono); letter-spacing: .08em; text-transform: uppercase;
+    }
+    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
+    .stat {
+      padding: 20px; border-left: 2px solid var(--green);
+      background: rgba(124,255,178,.045);
+    }
+    .stat strong { display: block; color: var(--green); font: 600 1.5rem var(--mono); margin-bottom: 7px; }
+    .stat span { color: var(--muted); font-size: .78rem; line-height: 1.4; }
+
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 38px; }
+    .step { position: relative; padding: 25px 22px 23px; border-top: 1px solid var(--line); background: rgba(16,24,32,.65); }
+    .step-number { color: var(--green); font: 12px var(--mono); margin-bottom: 24px; }
+    .step h3 { font-size: 1.05rem; margin-bottom: 10px; }
+    .step p { color: var(--muted); font-size: .9rem; line-height: 1.65; margin: 0; }
+
+    .code-panel {
+      margin-top: 36px; background: #0b1218; border: 1px solid rgba(85,200,255,.2);
+      border-radius: 14px; overflow: hidden; box-shadow: 0 22px 70px rgba(0,0,0,.2);
+    }
+    .code-head { display: flex; gap: 7px; padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,.07); }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #40515a; }
+    .code-head span { margin-left: auto; color: #6f838c; font: 10px var(--mono); }
+    pre { margin: 0; padding: 22px; overflow-x: auto; color: #b7c9cc; font: 12px/1.9 var(--mono); }
+    .code-green { color: var(--green); } .code-blue { color: var(--blue); } .code-muted { color: #71828a; }
+
+    .conclusion { text-align: center; }
+    .conclusion .lead { margin: 0 auto; }
+    .quote-mark { font: 5rem Georgia, serif; color: var(--green); opacity: .7; line-height: .7; margin-bottom: 20px; }
+    .final-line { font-size: clamp(2.4rem, 6vw, 5.8rem); line-height: 1.08; letter-spacing: -.065em; max-width: 950px; margin: 0 auto 28px; }
+    .footer-note { color: #60717a; font: 10px var(--mono); margin-top: 55px; letter-spacing: .1em; }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @keyframes float { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-16px) rotate(3deg); } }
+    @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+    @media (max-width: 760px) {
+      html { scroll-snap-type: y proximity; }
+      .topbar { padding: 18px 22px; }
+      .slide { padding: 105px 26px 78px; min-height: 100svh; }
+      .slide::before { inset: 7% 3%; }
+      .hero-grid, .content-grid { grid-template-columns: 1fr; }
+      .hero-art { min-height: 230px; margin-top: 4px; }
+      .orb { width: 180px; }
+      .float-label { font-size: 9px; }
+      .content-grid { margin-top: 28px; }
+      .steps { grid-template-columns: 1fr; gap: 10px; margin-top: 28px; }
+      .step { padding: 19px; }
+      .step-number { margin-bottom: 12px; }
+      .stat-row { gap: 8px; }
+      .stat { padding: 13px 10px; }
+      .stat strong { font-size: 1.15rem; }
+      .stat span { font-size: .68rem; }
+      .nav { gap: 7px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      html { scroll-snap-type: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+  <header class="topbar">
+    <a class="brand" href="#inicio">ECONOMIA <span>×</span> CÓDIGO</a>
+    <nav class="nav" aria-label="Navegação por seção">
+      <a href="#inicio" class="active" aria-label="Início"></a>
+      <a href="#dados" aria-label="Economia dos dados"></a>
+      <a href="#automacao" aria-label="Automação"></a>
+      <a href="#precificacao" aria-label="Precificação"></a>
+      <a href="#custos" aria-label="Custo do código"></a>
+      <a href="#conclusao" aria-label="Conclusão"></a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="slide hero" id="inicio">
+      <div class="inner hero-grid">
+        <div class="reveal">
+          <div class="eyebrow">Tecnologia + sociedade</div>
+          <h1>A lógica por trás da <span class="accent">economia</span> está no código.</h1>
+          <p class="lead">Como dados, algoritmos e software estão transformando mercados, profissões e a maneira como o valor é criado.</p>
+        </div>
+        <div class="hero-art reveal" aria-hidden="true">
+          <div class="orb"><div class="orb-icon"><i class="fa-solid fa-chart-line"></i></div></div>
+          <div class="float-label label-a">market_data.json</div>
+          <div class="float-label label-b">01 / 06 — SYSTEM ONLINE</div>
+        </div>
+      </div>
+      <div class="scroll-hint">ROLE PARA EXPLORAR <i class="fa-solid fa-arrow-down"></i></div>
+    </section>
+
+    <section class="slide" id="dados">
+      <div class="inner">
+        <div class="reveal">
+          <div class="eyebrow">01 / A economia dos dados</div>
+          <h2>Dados são o novo <span class="accent">combustível</span>.</h2>
+          <p class="lead">A programação transforma grandes volumes de informação em sinais úteis para entender o mercado e antecipar cenários.</p>
+        </div>
+        <div class="content-grid">
+          <article class="card reveal">
+            <div class="card-icon"><i class="fa-solid fa-database"></i></div>
+            <h3>Coleta e organização</h3>
+            <p>Softwares reúnem preços, vendas, comportamento de consumo e indicadores econômicos em bases estruturadas.</p>
+            <span class="tag">ETL · APIs · BIG DATA</span>
+          </article>
+          <article class="card reveal">
+            <div class="card-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+            <h3>Análise e previsão</h3>
+            <p>Estatística e aprendizado de máquina identificam padrões, estimam demanda e ajudam a avaliar riscos.</p>
+            <span class="tag">PYTHON · MACHINE LEARNING</span>
+          </article>
+        </div>
+        <div class="stat-row reveal">
+          <div class="stat"><strong>01</strong><span>Encontrar padrões</span></div>
+          <div class="stat"><strong>02</strong><span>Reduzir incertezas</span></div>
+          <div class="stat"><strong>03</strong><span>Apoiar decisões</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="automacao">
+      <div class="inner">
+        <div class="reveal">
+          <div class="eyebrow">02 / Automação e mercado de trabalho</div>
+          <h2>O trabalho muda quando o <span class="blue">processo</span> muda.</h2>
+          <p class="lead">Algoritmos automatizam tarefas repetitivas, aumentam a produtividade e também criam demanda por novas especialidades.</p>
+        </div>
+        <div class="steps">
+          <article class="step reveal">
+            <div class="step-number">01 — EFICIÊNCIA</div>
+            <h3>Automação</h3>
+            <p>Robôs de software processam pagamentos, estoques e documentos com velocidade e consistência.</p>
+          </article>
+          <article class="step reveal">
+            <div class="step-number">02 — NOVAS ÁREAS</div>
+            <h3>Profissões emergentes</h3>
+            <p>DevSecOps integra segurança ao desenvolvimento; especialistas em dados e IA criam novas soluções.</p>
+          </article>
+          <article class="step reveal">
+            <div class="step-number">03 — INOVAÇÃO</div>
+            <h3>Fintechs</h3>
+            <p>Empresas combinam finanças e tecnologia para oferecer pagamentos, crédito e investimentos digitais.</p>
+          </article>
+        </div>
+        <p class="lead reveal" style="margin-top:28px;font-size:.95rem">A tecnologia não elimina apenas tarefas: ela reorganiza funções e exige novas competências.</p>
+      </div>
+    </section>
+
+    <section class="slide" id="precificacao">
+      <div class="inner">
+        <div class="reveal">
+          <div class="eyebrow">03 / Algoritmos de precificação</div>
+          <h2>O preço também pode ser <span class="accent">calculado</span>.</h2>
+          <p class="lead">Sistemas analisam oferta, demanda, contexto e comportamento para ajustar valores em tempo real.</p>
+        </div>
+        <div class="content-grid">
+          <article class="card reveal">
+            <div class="card-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+            <h3>Mercado financeiro</h3>
+            <p>Algoritmos processam cotações e executam ordens em alta velocidade, seguindo estratégias e limites de risco.</p>
+            <span class="tag">ALGO TRADING</span>
+          </article>
+          <article class="card reveal">
+            <div class="card-icon"><i class="fa-solid fa-motorcycle"></i></div>
+            <h3>Plataformas digitais</h3>
+            <p>Serviços como Uber e iFood podem considerar distância, demanda, disponibilidade e horário para compor preços e ofertas.</p>
+            <span class="tag">PREÇO DINÂMICO · RECOMENDAÇÃO</span>
+          </article>
+        </div>
+        <div class="code-panel reveal">
+          <div class="code-head"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span>pricing_logic.py</span></div>
+          <pre><span class="code-muted"># Modelo ilustrativo — não representa o código real de uma plataforma</span>
+demanda = <span class="code-blue">medir_demanda</span>(regiao)
+oferta  = <span class="code-blue">medir_disponibilidade</span>(regiao)
+
+<span class="code-green">preco</span> = preco_base * (demanda / oferta)
+<span class="code-blue">exibir_oferta</span>(preco)</pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="custos">
+      <div class="inner">
+        <div class="reveal">
+          <div class="eyebrow">04 / O custo do código</div>
+          <h2>Software tem valor. E tem <span class="blue">custo</span>.</h2>
+          <p class="lead">Aplicações dependem de infraestrutura: servidores, armazenamento, redes e energia. Na nuvem, muitos desses recursos são cobrados conforme o uso.</p>
+        </div>
+        <div class="content-grid">
+          <article class="card reveal">
+            <div class="card-icon"><i class="fa-solid fa-cloud"></i></div>
+            <h3>Infraestrutura em nuvem</h3>
+            <p>Escalar uma aplicação pode aumentar processamento, tráfego e armazenamento — e, consequentemente, a conta.</p>
+            <span class="tag">COMPUTE · STORAGE · BANDWIDTH</span>
+          </article>
+          <article class="card reveal">
+            <div class="card-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+            <h3>Economia orienta a arquitetura</h3>
+            <p>Cache, bancos eficientes e serviços bem dimensionados equilibram desempenho, confiabilidade e orçamento.</p>
+            <span class="tag">CUSTO × PERFORMANCE</span>
+          </article>
+        </div>
+        <div class="stat-row reveal">
+          <div class="stat"><strong>MENOS</strong><span>Desperdício de recursos</span></div>
+          <div class="stat"><strong>MAIS</strong><span>Eficiência operacional</span></div>
+          <div class="stat"><strong>MELHOR</strong><span>Retorno do investimento</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide conclusion" id="conclusao">
+      <div class="inner reveal">
+        <div class="eyebrow">05 / Conclusão</div>
+        <div class="quote-mark">“</div>
+        <h2 class="final-line">O futuro não será apenas digital. Será <span class="accent">construído por quem entende o valor do código.</span></h2>
+        <p class="lead">Economia explica como os recursos são distribuídos. Programação cria ferramentas para transformar essa distribuição.</p>
+        <div class="footer-note">ECONOMIA × PROGRAMAÇÃO — FIM DA APRESENTAÇÃO</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const sections = [...document.querySelectorAll(".slide")];
+    const dots = [...document.querySelectorAll(".nav a")];
+    const progress = document.getElementById("progress");
+
+    // Revela os elementos conforme entram na tela.
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add("visible");
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+
+    // Atualiza navegação e barra de progresso.
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const index = sections.indexOf(entry.target);
+        dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+      });
+    }, { threshold: 0.55 });
+    sections.forEach(section => sectionObserver.observe(section));
+
+    function updateProgress() {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const amount = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+      progress.style.width = `${amount}%`;
+    }
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
+  </script>
+</body>
+</html>
+
