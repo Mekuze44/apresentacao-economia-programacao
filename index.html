@@ -177,6 +177,37 @@
     .step h3 { font-size: 1.05rem; margin-bottom: 10px; }
     .step p { color: var(--muted); font-size: .9rem; line-height: 1.65; margin: 0; }
 
+    .history-grid {
+      display: grid; grid-template-columns: minmax(230px, .72fr) 1.28fr;
+      gap: clamp(28px, 6vw, 76px); align-items: center; margin-top: 38px;
+    }
+    .portrait-frame {
+      margin: 0; padding: 12px; border-radius: 18px;
+      border: 1px solid rgba(124,255,178,.24);
+      background: linear-gradient(145deg, rgba(124,255,178,.10), rgba(85,200,255,.04));
+      box-shadow: 0 24px 70px rgba(0,0,0,.28);
+      max-width: 340px; position: relative;
+    }
+    .portrait-frame img {
+      display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover;
+      object-position: center 25%; border-radius: 10px; filter: grayscale(100%) contrast(1.05);
+    }
+    .portrait-frame figcaption {
+      color: var(--muted); font-size: .72rem; line-height: 1.55;
+      padding: 13px 5px 3px;
+    }
+    .portrait-frame figcaption strong { display: block; color: var(--green); font: 500 11px var(--mono); margin-bottom: 4px; }
+    .history-copy h3 { font-size: 1.35rem; margin: 0 0 12px; }
+    .history-copy p { color: var(--muted); line-height: 1.75; }
+    .history-points { display: grid; gap: 12px; margin-top: 24px; }
+    .history-point { display: flex; gap: 13px; align-items: flex-start; color: var(--muted); font-size: .9rem; line-height: 1.6; }
+    .history-point i { color: var(--green); margin-top: 4px; }
+    .history-credit { color: #6e8089; font: 10px var(--mono); margin-top: 20px; line-height: 1.6; }
+    .history-credit a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+    .card-caption {
+      margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.07);
+      color: #78919a; font: 10px/1.5 var(--mono); letter-spacing: .04em;
+    }
     .code-panel {
       margin-top: 36px; background: #0b1218; border: 1px solid rgba(85,200,255,.2);
       border-radius: 14px; overflow: hidden; box-shadow: 0 22px 70px rgba(0,0,0,.2);
@@ -203,7 +234,8 @@
       .topbar { padding: 18px 22px; }
       .slide { padding: 105px 26px 78px; min-height: 100svh; }
       .slide::before { inset: 7% 3%; }
-      .hero-grid, .content-grid { grid-template-columns: 1fr; }
+      .hero-grid, .content-grid, .history-grid { grid-template-columns: 1fr; }
+      .portrait-frame { max-width: 260px; margin: 0 auto; }
       .hero-art { min-height: 230px; margin-top: 4px; }
       .orb { width: 180px; }
       .float-label { font-size: 9px; }
@@ -231,6 +263,7 @@
       <a href="#inicio" class="active" aria-label="Início"></a>
       <a href="#dados" aria-label="Economia dos dados"></a>
       <a href="#automacao" aria-label="Automação"></a>
+      <a href="#historia" aria-label="Figura histórica"></a>
       <a href="#precificacao" aria-label="Precificação"></a>
       <a href="#custos" aria-label="Custo do código"></a>
       <a href="#conclusao" aria-label="Conclusão"></a>
@@ -267,12 +300,14 @@
             <h3>Coleta e organização</h3>
             <p>Softwares reúnem preços, vendas, comportamento de consumo e indicadores econômicos em bases estruturadas.</p>
             <span class="tag">ETL · APIs · BIG DATA</span>
+            <div class="card-caption">LEGENDA: transformar informação dispersa em dados utilizáveis.</div>
           </article>
           <article class="card reveal">
             <div class="card-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
             <h3>Análise e previsão</h3>
             <p>Estatística e aprendizado de máquina identificam padrões, estimam demanda e ajudam a avaliar riscos.</p>
             <span class="tag">PYTHON · MACHINE LEARNING</span>
+            <div class="card-caption">LEGENDA: padrões ajudam a estimar cenários — não garantem previsões.</div>
           </article>
         </div>
         <div class="stat-row reveal">
@@ -311,10 +346,39 @@
       </div>
     </section>
 
+    <section class="slide" id="historia">
+      <div class="inner">
+        <div class="reveal">
+          <div class="eyebrow">03 / Uma ponte histórica</div>
+          <h2>Quando a matemática conectou <span class="accent">mercados e máquinas</span>.</h2>
+          <p class="lead">Uma das figuras que melhor representa essa interseção é John von Neumann.</p>
+        </div>
+        <div class="history-grid">
+          <figure class="portrait-frame reveal">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/JohnvonNeumann-LosAlamos.jpg"
+                 alt="Retrato em preto e branco do matemático John von Neumann" loading="lazy">
+            <figcaption>
+              <strong>JOHN VON NEUMANN · 1903–1957</strong>
+              Matemático, cientista da computação e um dos pioneiros da teoria dos jogos e da arquitetura de computadores.
+            </figcaption>
+          </figure>
+          <div class="history-copy reveal">
+            <h3>Uma mente em duas revoluções</h3>
+            <p>Von Neumann ajudou a estabelecer ferramentas matemáticas para estudar decisões estratégicas e também influenciou profundamente o desenho dos computadores modernos.</p>
+            <div class="history-points">
+              <div class="history-point"><i class="fa-solid fa-chess-knight"></i><span><strong style="color:var(--text)">Economia:</strong> desenvolveu, com Oskar Morgenstern, a teoria dos jogos aplicada à análise de decisões e estratégias econômicas.</span></div>
+              <div class="history-point"><i class="fa-solid fa-microchip"></i><span><strong style="color:var(--text)">Computação:</strong> ajudou a formalizar a arquitetura de programa armazenado, base conceitual de grande parte dos computadores atuais.</span></div>
+            </div>
+            <div class="history-credit">FOTOGRAFIA: LOS ALAMOS NATIONAL LABORATORY · <a href="https://commons.wikimedia.org/wiki/File:JohnvonNeumann-LosAlamos.jpg" target="_blank" rel="noopener noreferrer">FONTE E CRÉDITOS</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="slide" id="precificacao">
       <div class="inner">
         <div class="reveal">
-          <div class="eyebrow">03 / Algoritmos de precificação</div>
+          <div class="eyebrow">04 / Algoritmos de precificação</div>
           <h2>O preço também pode ser <span class="accent">calculado</span>.</h2>
           <p class="lead">Sistemas analisam oferta, demanda, contexto e comportamento para ajustar valores em tempo real.</p>
         </div>
@@ -324,12 +388,14 @@
             <h3>Mercado financeiro</h3>
             <p>Algoritmos processam cotações e executam ordens em alta velocidade, seguindo estratégias e limites de risco.</p>
             <span class="tag">ALGO TRADING</span>
+            <div class="card-caption">LEGENDA: decisões automatizadas obedecem a regras e limites.</div>
           </article>
           <article class="card reveal">
             <div class="card-icon"><i class="fa-solid fa-motorcycle"></i></div>
             <h3>Plataformas digitais</h3>
             <p>Serviços como Uber e iFood podem considerar distância, demanda, disponibilidade e horário para compor preços e ofertas.</p>
             <span class="tag">PREÇO DINÂMICO · RECOMENDAÇÃO</span>
+            <div class="card-caption">LEGENDA: contexto e disponibilidade podem influenciar a oferta.</div>
           </article>
         </div>
         <div class="code-panel reveal">
@@ -347,7 +413,7 @@ oferta  = <span class="code-blue">medir_disponibilidade</span>(regiao)
     <section class="slide" id="custos">
       <div class="inner">
         <div class="reveal">
-          <div class="eyebrow">04 / O custo do código</div>
+          <div class="eyebrow">05 / O custo do código</div>
           <h2>Software tem valor. E tem <span class="blue">custo</span>.</h2>
           <p class="lead">Aplicações dependem de infraestrutura: servidores, armazenamento, redes e energia. Na nuvem, muitos desses recursos são cobrados conforme o uso.</p>
         </div>
@@ -357,12 +423,14 @@ oferta  = <span class="code-blue">medir_disponibilidade</span>(regiao)
             <h3>Infraestrutura em nuvem</h3>
             <p>Escalar uma aplicação pode aumentar processamento, tráfego e armazenamento — e, consequentemente, a conta.</p>
             <span class="tag">COMPUTE · STORAGE · BANDWIDTH</span>
+            <div class="card-caption">LEGENDA: capacidade contratada e consumo afetam a fatura.</div>
           </article>
           <article class="card reveal">
             <div class="card-icon"><i class="fa-solid fa-scale-balanced"></i></div>
             <h3>Economia orienta a arquitetura</h3>
             <p>Cache, bancos eficientes e serviços bem dimensionados equilibram desempenho, confiabilidade e orçamento.</p>
             <span class="tag">CUSTO × PERFORMANCE</span>
+            <div class="card-caption">LEGENDA: arquitetura é também uma decisão econômica.</div>
           </article>
         </div>
         <div class="stat-row reveal">
@@ -375,7 +443,7 @@ oferta  = <span class="code-blue">medir_disponibilidade</span>(regiao)
 
     <section class="slide conclusion" id="conclusao">
       <div class="inner reveal">
-        <div class="eyebrow">05 / Conclusão</div>
+        <div class="eyebrow">06 / Conclusão</div>
         <div class="quote-mark">“</div>
         <h2 class="final-line">O futuro não será apenas digital. Será <span class="accent">construído por quem entende o valor do código.</span></h2>
         <p class="lead">Economia explica como os recursos são distribuídos. Programação cria ferramentas para transformar essa distribuição.</p>
